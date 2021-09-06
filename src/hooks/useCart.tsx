@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { Product, Stock } from '../types';
@@ -24,22 +24,56 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const [cart, setCart] = useState<Product[]>(() => {
     const storagedCart = localStorage.getItem('@RocketShoes:cart');
-
     if (storagedCart) {
       return JSON.parse(storagedCart);
     }
 
     return [];
   });
-
+  
   const addProduct = async (productId: number) => {
+    // localStorage.clear();
+    const storagedCart = localStorage.getItem('@RocketShoes:cart');
+    console.log(storagedCart)
+
     try {
-      setCart([
-        ...cart,
-      ])
-      localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
+      const productFind = cart.find((product) => product.id === productId);
+      const stockResponse = await api.get(`stock/${productId}`);
+      const { amount } = stockResponse.data;
+
+      if(!productFind){
+
+        const { data } = await api.get(`products/${productId}`);
+        const product = { ...data, amount: 1 };
+
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify([...cart,product]))
+
+        setCart([
+          ...cart,
+          product
+        ])
+        toast.success('Produto adicionado no carrinho');
+      }else{
+
+        if(amount < productFind.amount+1){
+          toast.error('Quantidade solicitada fora de estoque');
+          return;
+        }
+        const cartAddAmount = cart.map((product) => product.id === productId 
+          ? { ...product, amount: product.amount + 1 } 
+          : {...product}
+        );
+
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(cartAddAmount))
+
+        setCart(cartAddAmount);
+        
+        toast.success('Produto adicionado no carrinho');
+        
+      }
+      
     } catch {
-      // TODO
+      toast.error('Erro na adição do produto');
     }
   };
 
