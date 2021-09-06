@@ -33,9 +33,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   
   const addProduct = async (productId: number) => {
     // localStorage.clear();
-    const storagedCart = localStorage.getItem('@RocketShoes:cart');
-    console.log(storagedCart)
-
+    
     try {
       const productFind = cart.find((product) => product.id === productId);
       const stockResponse = await api.get(`stock/${productId}`);
