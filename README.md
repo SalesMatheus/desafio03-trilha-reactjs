@@ -4,7 +4,7 @@
 
 ![cover](.github/home.png?style=flat)
 
-# 💻 Sobre o desafio
+# Sobre o desafio 💻 
 
 Essa será uma aplicação onde o principal objetivo é criar um hook de carrinho de compras. 
 
