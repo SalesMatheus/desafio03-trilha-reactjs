@@ -1,3 +1,9 @@
+<h1 align="center">
+    <img height="80" src=".github/logo2.svg" alt="rocketshoes" />
+</h1>
+
+![cover](.github/home.png?style=flat)
+
 # 💻 Sobre o desafio
 
 Essa será uma aplicação onde o principal objetivo é criar um hook de carrinho de compras. 
