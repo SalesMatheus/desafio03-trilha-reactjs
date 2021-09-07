@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img height="80" src=".github/logo2.svg" alt="rocketshoes" />
+    <img height="80" src=".github/logo.svg" alt="rocketshoes" />
 </h1>
 
 ![cover](.github/home.png?style=flat)
